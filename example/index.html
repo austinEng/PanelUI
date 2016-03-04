@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="../dist/panelui.css">
+  <script type="text/javascript" src="../dist/panelui.js"></script>
+  <style>
+    #container {
+      position: fixed;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container"></div>
+  <script>
+  var defaultLayout = {
+    layout: 'horizontal', // horizontal/vertical
+    panels: [
+      {
+        floating: false
+      },
+      {
+        floating: true,
+        panels: [
+          {
+            floating: false
+          },
+          {
+            floating: false
+          }
+        ]
+      },
+      {
+        floating: true
+      },
+      {
+        floating: false
+      }
+    ],
+  }
+  window.createPanelWindow('container', defaultLayout);
+  </script>
+</body>
+
+</html>
