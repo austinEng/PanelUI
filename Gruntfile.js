@@ -19,7 +19,8 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'dist/panelui.js': 'src/panelui.js'
+          'dist/panelui.js': 'src/panelui.js',
+          'example/example.js': 'src/example.js'
         }
       }
     },

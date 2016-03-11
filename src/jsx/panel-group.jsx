@@ -3,30 +3,85 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var Panel = require('../components/panel.js')
+var PanelSplitter = require('../components/panel-splitter.js')
 var classNames = require('classnames')
 
 var PanelGroup = React.createClass({
+
   render: function() {
+
+    var panel = this.props.getPanel(this.props.idx)
+
     var groupClass = classNames({
       'panel-group': true,
-      'panel-layout-horizontal': this.props.layout == 'horizontal',
-      'panel-layout-vertical': this.props.layout == 'vertical' || !this.props.layout,
-      'panel-group-floating': this.props.floating
+      'panel-layout-horizontal': panel.layout == 'horizontal',
+      'panel-layout-vertical': panel.layout == 'vertical',
+      'panel-group-floating': panel.floating
     })
+
+    var style = {}
+    if ('parIdx' in this.props) {
+      var parent = this.props.getPanel(this.props.parIdx)
+      if (parent.layout == 'horizontal') {
+        style.flexBasis = this.props.width
+      }
+      if (parent.layout == 'vertical') {
+        style.flexBasis = this.props.height
+      }
+    }
+
+    var parIdx = this.props.idx   // child panels' parent is this one
+    var items = panel.subpanels
+    var newarr = []
+    for (var i = 0; i < items.length; i++) {
+      newarr.push(items[i])
+      if (i != items.length - 1) {
+        newarr.push(-1*i - 1)
+      }
+    }
+    var splitterDownCB = this.props.onSplitterDown
+    var that = this
     return (
-      <div className={groupClass}>
-        {this.props.panels.map(function (panel, index) {
+      <div className={groupClass} style={style} id={this.props.id}>
+        {newarr.map(function (panelIdx, index) {  
+          var panel = that.props.getPanel(panelIdx)
+          if (panelIdx < 0) {
+            var itemIdx = -(panelIdx + 1)
 
-          if (panel.panels) {
             return (
-              <PanelGroup panels={panel.panels} layout={panel.layout} floating={panel.floating} key={index} />
-            ) 
-          } else {
-            return (
-              <Panel panel={panel} floating={panel.floating} key={index} />
+              <div className='panel-splitter-pos'>
+                <PanelSplitter key={index} fIdx={'panel'+items[itemIdx]} sIdx={'panel'+items[itemIdx + 1]} par={that} onSplitterDown={splitterDownCB} />
+              </div>
             )
+          } else {
+            if (panel.subpanels && panel.subpanels.length > 0) {
+              return (
+                <PanelGroup 
+                ref={'panel'+panelIdx} 
+                idx={panelIdx} 
+                parIdx={parIdx} 
+                width={panel.width} 
+                height={panel.height} 
+                layout={panel.layout}
+                key={index} 
+                onSplitterDown={splitterDownCB} 
+                getPanel={that.props.getPanel} 
+                id={panel.id} />
+              )
+            } else {
+              return (
+                <Panel 
+                ref={'panel'+panelIdx} 
+                idx={panelIdx} 
+                parIdx={parIdx} 
+                width={panel.width} 
+                height={panel.height} 
+                key={index} 
+                getPanel={that.props.getPanel} 
+                id={panel.id} />
+              )
+            }
           }
-
         })}
       </div>
     )
