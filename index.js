@@ -2,7 +2,7 @@
 
 var React = require('react')
 var ReactDOM = require('react-dom')
-var PanelWindow = require('./components/panel-window.js')
+var PanelWindow = require('./src/components/panel-window.js')
 
 var PanelUI = {
   create: function(id, layout) {

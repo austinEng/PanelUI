@@ -9,9 +9,9 @@ module.exports = function(grunt) {
       jsx: {
         files: [{
           expand: true,
-          cwd: 'src/jsx', // Custom folder
+          cwd: 'src/jsx',
           src: ['*.jsx'],
-          dest: 'src/components', // Custom folder
+          dest: 'src/components',
           ext: '.js'
         }]
       }
@@ -19,15 +19,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'dist/panelui.js': 'src/panelui.js',
           'example/example.js': 'src/example.js'
-        }
-      }
-    },
-    uglify: {
-      dist: {
-        files: {
-          'dist/panelui.min.js': 'src/panelui.js'
         }
       }
     },
@@ -40,8 +32,8 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ['src/**/*.js'],
-        tasks: ['browserify', 'uglify'],
+        files: ['src/example.js'],
+        tasks: ['browserify'],
         options: {
           spawn: false,
         },
@@ -55,7 +47,7 @@ module.exports = function(grunt) {
       },
       components: {
         files: ['src/jsx/**/*.jsx'],
-        tasks: ['babel', 'browserify', 'uglify'],
+        tasks: ['babel', 'browserify'],
         options: {
           spawn: false
         }
@@ -64,9 +56,8 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['babel', 'browserify', 'uglify', 'sass']);
+  grunt.registerTask('default', ['babel', 'browserify', 'sass']);
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-var PanelUI = require('./panelui.js')
+var PanelUI = require('../index.js')
 
 var layout = {
   root: 0,
